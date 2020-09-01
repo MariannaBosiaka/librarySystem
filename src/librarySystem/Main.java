@@ -77,7 +77,7 @@ public class Main {
 						
 			switch(numChoice2) {
 				case 1:
-					createDataBase();
+					dataBaseCreation();
 					break;
 				case 2:
 					membersListMenu();
@@ -106,7 +106,7 @@ public class Main {
 		System.out.println();
 		
 		do {
-			System.out.println("    Insert your choice (1 to 3):  ");
+			System.out.println("    Insert your choice (1 to 3):  ");-
 			int numChoice3 = consoleIn.nextInt();
 			
 			
@@ -180,10 +180,10 @@ public class Main {
 			}while(count!=0);
 	}
 	
-	public void createDataBase() {
+	public void dataBaseCreation() {
 		
 		try {
-			File fileCheck = new File("C:\\Users\\Ìבסיב\\eclipse-workspace\\librarySystem");
+			File fileCheck = new File("C:\\"); //missing a path!
 			String[] allFiles = fileCheck.list();
 			for(String fileZ : allFiles) {
 				if(fileZ.endsWith(".mg")){
