@@ -1,7 +1,10 @@
 package librarySystem;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -15,6 +18,7 @@ public class Main {
 	private char ansBookAdd;	
 	private char ansMemberAdd;
 	private int count = 0;
+	private ObjectOutputStream dataBase;
 
 	public static void main(String[] args) {
 		
@@ -61,7 +65,7 @@ public class Main {
 		
 		System.out.println("             - MENU -             ");
 		System.out.println();
-		System.out.println("    1.  Create new file/list      ");
+		System.out.println("    1.  Create new base           ");
 		System.out.println("    2.  Members                   ");
 		System.out.println("    3.  Librarians                ");
 		System.out.println("    4.  Books                     ");
@@ -73,7 +77,7 @@ public class Main {
 						
 			switch(numChoice2) {
 				case 1:
-					FileCreation();
+					createDataBase();
 					break;
 				case 2:
 					membersListMenu();
@@ -103,7 +107,7 @@ public class Main {
 		
 		do {
 			System.out.println("    Insert your choice (1 to 3):  ");
-			int numChoice3= consoleIn.nextInt();
+			int numChoice3 = consoleIn.nextInt();
 			
 			
 			switch(numChoice3) {
@@ -132,7 +136,7 @@ public class Main {
 		
 		do {
 			System.out.println("    Insert your choice (1 or 2):  ");
-			int numChoice4= consoleIn.nextInt();
+			int numChoice4 = consoleIn.nextInt();
 			
 			
 			switch(numChoice4) {
@@ -159,7 +163,7 @@ public class Main {
 		
 		do {
 			System.out.println("    Insert your choice (1 or 2):  ");
-			int numChoice4= consoleIn.nextInt();
+			int numChoice4 = consoleIn.nextInt();
 			
 			
 			switch(numChoice4) {
@@ -176,50 +180,34 @@ public class Main {
 			}while(count!=0);
 	}
 	
-
-
-	public void FileCreation() {
+	public void createDataBase() {
 		
-		
-		System.out.println("Enter a name for your new file: ");
-		System.out.println("(Enter a string like: myFile.yourend)");
-		String fileNameStr = consoleIn.next();
-		//to make sure the user hasn't made a false choice
-		System.out.println("Do you really want to create this file?");
-		System.out.println("Type: y/Y for yes - n/N for no");
-		char answer = consoleIn.next().charAt(0);
-		if(answer == 'y' || answer == 'Y') {
-			try {
-		
-				File newFile = new File(fileNameStr);
-				if(newFile.createNewFile()) {
-					System.out.println("The file "+ newFile.getName() + " has been created!");
-					System.out.println();
-					System.out.println("Return to previous menu?");
-					System.out.println("Type: y/Y for yes - n/N for no");
-					char answer2 = consoleIn.next().charAt(0);
-					if(answer2 == 'y' || answer2 == 'Y') {
-						menu2();
-					}
-					else {
-						FileCreation();						
-					}	
-						
+		try {
+			File fileCheck = new File("C:\\Users\\Ìבסיב\\eclipse-workspace\\librarySystem");
+			String[] allFiles = fileCheck.list();
+			for(String fileZ : allFiles) {
+				if(fileZ.endsWith(".mg")){
+					System.out.println("You have a data base already created!");	
 				}
 				else {
-					System.out.println("This file already exists.. :(");
-				}	
+					System.out.println("Enter a name for your new file: ");
+					System.out.println("Example: mybase (without an ending)");
+					String fileName = consoleIn.next();
+					
+					FileOutputStream f = new FileOutputStream(new File(fileName + ".mg"));
+					dataBase = new ObjectOutputStream(f);
+					System.out.println("Base was successfully created!");
+				}
+					
 			}
-			catch(IOException e){
-				System.out.println("Unfortunately, an error has occured.. ");
-				e.printStackTrace();
-			}	
-		}
-		else {
-			menu2();
+			
+		}catch (FileNotFoundException e) {
+			System.out.println("File not found");
+		}catch (IOException e) {
+			System.out.println("Error initializing stream");
 		}
 	}
-	
+
 	//log in method for the librarians
 	//missing if else to check existence
 	public void logInLib() {
@@ -236,8 +224,7 @@ public class Main {
 		System.out.println();
 		
 		menu2();
-		
-		
+				
 	}
 	
 public void addBookToList() {
@@ -264,6 +251,18 @@ public void addBookToList() {
 			ansBookAdd = consoleIn.next().charAt(0);
 	
 		}
+		
+//		try {
+//			System.out.println("Enter the name of the file you want to save the list to: ");
+//			String fileName = consoleIn.next();
+//			
+//			
+//		}
+//		catch(IOException e){
+//			
+//			e.printStackTrace();
+//			
+//		}
 		
 		bookListMenu();
 		
